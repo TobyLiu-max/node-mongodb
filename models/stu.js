@@ -2,22 +2,27 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 
-const db = mongoose.createConnection('mongodb://localhost:27017/shop', { useNewUrlParser: true }, (err) => {
-    if (err) {
-        console.log('数据库连接失败', err)
-    }
+mongoose.connect('mongodb://localhost:27017/shop', { useNewUrlParser: true, useUnifiedTopology: true })
+
+const db = mongoose.connection
+
+db.on('error', console.error.bind(console, 'connection error:'))
+
+db.once('open', function () {
     console.log('数据库连接成功')
 })
 
-const modal = db.model('stu', {
-    uname: { type: String, default: '神龙教主' },
+const newSchema = new Schema({
+    uname: { type: String },
     age: { type: Number },
     sex: { type: String }
 })
+const User = mongoose.model('sut', newSchema)
 
-// 方法
+// add方法
 const createModal = postData => {
-    const insertObj = new modal(postData)
+    console.log('postData', postData)
+    const insertObj = new User(postData)
     return insertObj.save()
         .then(res => {
             return res
@@ -27,6 +32,18 @@ const createModal = postData => {
         })
 }
 
+// 获取列表
+const getSutData = () => {
+    return User.find()
+        .then(res => {
+            return res
+        }).catch(err => {
+            console.log('插入失败', err)
+            return []
+        })
+}
+
 module.exports = {
-    createModal
+    createModal,
+    getSutData
 }

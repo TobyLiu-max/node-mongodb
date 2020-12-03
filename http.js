@@ -13,6 +13,7 @@ app.get('/', (req, res) => {
 })
 
 app.post('/stu', stuController.create)
+app.get('/stu', stuController.getStuList)
 
 app.listen(3000, () => {
     console.log('server start http://localhost:3000')
