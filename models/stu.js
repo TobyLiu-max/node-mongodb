@@ -33,8 +33,9 @@ const createModal = postData => {
 }
 
 // 获取列表
-const getSutData = () => {
-    return User.find()
+const getSutData = (skip, limit) => {
+    // skip limit
+    return User.find().skip(skip).limit(limit)
         .then(res => {
             return res
         }).catch(err => {

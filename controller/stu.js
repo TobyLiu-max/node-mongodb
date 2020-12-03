@@ -30,7 +30,10 @@ const create = async (req, res) => {
 }
 
 const getStuList = async (req, res) => {
-    const data = await getSutData()
+    const params = req.query
+    const { pageSize = 2, pageNo = 1 } = params
+    const skip = (parseInt(pageNo) - 1) * pageSize
+    const data = await getSutData(skip, parseInt(pageSize))
     console.log('getdata', data)
     // 4、判断返回
     if (data) {
